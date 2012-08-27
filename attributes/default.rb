@@ -42,4 +42,17 @@ default[:cloudfoundry_mysql_service][:node][:max_long_tx] = 30
 # TODO (trotter): Find out what this does.
 default[:cloudfoundry_mysql_service][:node][:migration_nfs] = "/mnt/migration"
 
+# Samir : Attributes défined in recipe 
 
+default[:cloudfoundry_mysql_service][:node][:bind_address] = "0.0.0.0"
+default[:cloudfoundry_mysql_service][:node][:user] = "root"
+default[:cloudfoundry_mysql_service][:node][:password] = ""
+
+default[:cloudfoundry_mysql_service][:searched_data][:cloudfoundry_cloud_controller][:server][:api_uri] = ''
+
+default[:cloudfoundry_mysql_service][:searched_data][:cloudfoundry_common][:service_token]=''
+default[:cloudfoundry_mysql_service][:searched_data][:nats_server][:host]=''
+
+default[:cloudfoundry_mysql_service][:searched_data][:nats_server][:user]=''
+default[:cloudfoundry_mysql_service][:searched_data][:nats_server][:password]=''
+default[:cloudfoundry_mysql_service][:searched_data][:nats_server][:port]=''
