@@ -12,7 +12,18 @@ package "libsqlite3-dev"
   node.set[:cloudfoundry_mysql_service][:node][:password] = node.mysql.server_root_password 
   node.set[:cloudfoundry_mysql_service][:node][:user] = "root"
 
-  n_nodes = search(:node, "role:cloudfoundry_nats_server")
+if Chef::Config[:solo]
+
+    Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
+
+else 
+
+
+  cf_id_node = node['cloudfoundry_mysql_service']['cf_session']['cf_id']
+
+
+
+  n_nodes = search(:node, "role:cloudfoundry_nats_server AND cf_id:#{cf_id_node}")
   n_node = n_nodes.first
   
   node.set[:cloudfoundry_mysql_service][:searched_data][:nats_server][:host] = n_node.ipaddress
@@ -20,11 +31,15 @@ package "libsqlite3-dev"
   node.set[:cloudfoundry_mysql_service][:searched_data][:nats_server][:password] = n_node.nats_server.password
   node.set[:cloudfoundry_mysql_service][:searched_data][:nats_server][:port] = n_node.nats_server.port
   
-   max=0
-   i_nodes = search(:node, "role:cloudfoundry_mysql_node") #7role:cloudfoundry_mysql_node")
-   max = i_nodes.count
+   i_nodes = search(:node, "role:cloudfoundry_mysql_node AND cf_id:#{cf_id_node}") #7role:cloudfoundry_mysql_node")
 
-   node.set[:cloudfoundry_mysql_service][:node][:index] = max
+   if i_nodes.count > 0
+     node.set[:cloudfoundry_mysql_service][:node][:index] = i_nodes.count
+   else 
+     node.set[:cloudfoundry_mysql_service][:node][:index] = 0
+   end
+   
+end
 
 
 
