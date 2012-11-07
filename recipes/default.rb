@@ -63,7 +63,7 @@ package 'libmysqlclient-dev'
   m_nodes = search(:node, "role:cloudfoundry_controller AND cf_id:#{cf_id_node}")
   m_node = m_nodes.first
   
-  node.set['cloudfoundry_mysql_service']['searched_data']['cloudfoundry_cloud_controller']['server']['api_uri'] = "" + m_node.ipaddress + ":80" #m_node.cloudfoundry_cloud_controller.server.api_uri
+  node.set['cloudfoundry_mysql_service']['searched_data']['cloudfoundry_cloud_controller']['server']['api_uri'] = "" + m_node.ipaddress + ":" + m_node['cloudfoundry_cloud_controller']['server']['external_port'].to_s #m_node.cloudfoundry_cloud_controller.server.api_uri
   node.set['cloudfoundry_mysql_service']['searched_data']['cloudfoundry_common']['service_token'] = m_node.cloudfoundry_common.service_token
   
   n_nodes = search(:node, "role:cloudfoundry_nats_server AND cf_id:#{cf_id_node} ")
